@@ -125,6 +125,7 @@ public class Register implements ActionListener {
             String email=  jtEmail.getText();
             String password = jPassword.getText();
             User user = new User(1 ,username , email , password ,1);
+            
             boolean result = controller.insertNewUser(user);
             if(result){
             new UserMenu();

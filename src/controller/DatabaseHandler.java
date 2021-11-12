@@ -14,14 +14,12 @@ public class DatabaseHandler {
 
     private Connection logOn() {
         try {
-
             // Load JDBC Driver
             Class.forName(DRIVER);
-
+            
             // Make Object Connection
             conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (Exception ex) {
-
             // Handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getLocalizedMessage());

@@ -24,6 +24,7 @@ public class Controller {
             return (true);
         } catch (SQLException e) {
             e.printStackTrace();
+
             return (false);
         }
     }
@@ -32,7 +33,6 @@ public class Controller {
         String query = " ";
         try {
             PreparedStatement stmt = conn.conn.prepareStatement(query);
-
             return (true);
         } catch (SQLException e) {
             e.printStackTrace();
