@@ -12,12 +12,12 @@ public class Controller {
     public Controller() {
     }
     
-    public boolean insertNewUser() {
+    public boolean insertNewUser(User user) {
         conn.connect();
         String query = "INSERT INTO `user`(`name`, `email`,`password`) VALUES ('?','?','?')";
         try {
             PreparedStatement stmt = conn.conn.prepareStatement(query);
-            stmt.setString(1, user.getName());
+            stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
             stmt.executeUpdate();
