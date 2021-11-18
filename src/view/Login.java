@@ -2,8 +2,12 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,24 +15,33 @@ import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import controller.Controller;
+import javax.swing.JOptionPane;
+import model.User;
+import javax.swing.JCheckBox;
+import java.awt.event.ItemListener;
 
-public class Login implements ActionListener {
+public class Login implements ActionListener , ItemListener{
     JFrame fLogin;
     JPanel panelLogin;
     JButton btnLogin, btnBack;
     JLabel lUsername, lPassword, lEmail, lLogin;
     JTextField jtUsername, jtEmail;
     JPasswordField jPassword;
+    JCheckBox showPassword;
+    Controller control = new Controller();
 
     public Login() {
         // object for querry
-        Controller control = new Controller();
-
-        fLogin = new JFrame("LogIn");
+       
+        fLogin = new JFrame("Login");
         fLogin.setSize(550, 700);
         fLogin.setLayout(null);
         fLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        Image icon = Toolkit.getDefaultToolkit().getImage("src\\images\\icon-for-social-media-19.jpg");
+        fLogin.setIconImage(icon);
+
+        
         panelLogin = new JPanel();
         panelLogin.setBackground(new Color(135, 206, 235));
         panelLogin.setSize(550, 700);
@@ -41,7 +54,7 @@ public class Login implements ActionListener {
         // username input
         lUsername = new JLabel("USERNAME ");
         lUsername.setFont(new Font("Tahoma", Font.BOLD, 15));
-        lUsername.setBounds(235, 50, 100, 100);
+        lUsername.setBounds(230, 50, 100, 100);
 
         jtUsername = new JTextField();
         jtUsername.setBounds(160, 120, 220, 30);
@@ -57,20 +70,36 @@ public class Login implements ActionListener {
 
         lPassword = new JLabel("PASSWORD");
         lPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-        lPassword.setBounds(235, 230, 100, 100);
+        lPassword.setBounds(230, 230, 100, 100);
 
         jPassword = new JPasswordField();
         jPassword.setBounds(160, 300, 220, 30);
 
+           // button for showing password
+           showPassword = new JCheckBox("Show Password ");
+           showPassword.setBounds(jPassword.getX(), jPassword.getY() + 30, 150, 20);
+           showPassword.setBackground(new Color(135, 206, 235));
+           char passwordDefault= jPassword.getEchoChar();
+           showPassword.addItemListener(new ItemListener() {
+               public void itemStateChanged(ItemEvent e) {
+                   if (e.getStateChange() == ItemEvent.SELECTED) {
+                       jPassword.setEchoChar((char) 0);
+                   } else {
+                       jPassword.setEchoChar(passwordDefault);
+                   }
+               }
+           });
+           
         // button
-        btnLogin = new JButton("LogIn");
-        btnLogin.setBounds(200, 370, 120, 50);
+        btnLogin = new JButton("Login");
+        btnLogin.setBounds(200, showPassword.getY()+showPassword.getHeight()+50, 120, 50);
         btnLogin.addActionListener(this);
 
         btnBack = new JButton("Back");
         btnBack.setBounds(10, 580, 90, 30);
         btnBack.addActionListener(this);
 
+        
         // add to panel
         panelLogin.add(lLogin);
         panelLogin.add(lUsername);
@@ -81,6 +110,7 @@ public class Login implements ActionListener {
         panelLogin.add(jPassword);
         panelLogin.add(btnLogin);
         panelLogin.add(btnBack);
+        panelLogin.add(showPassword);
 
         // add to Frame
         fLogin.add(panelLogin);
@@ -92,8 +122,23 @@ public class Login implements ActionListener {
         String command = e.getActionCommand();
         switch (command) {
         case "Login":
-            new UserMenu();
-            fLogin.dispose();
+            // Get value
+            String email = jtEmail.getText();
+            String password = String.valueOf(jPassword.getPassword());
+
+            // Checking value
+            if (email.equals("") && password.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please fill all field !");
+            } else {
+                // Get data from database
+                User user = control.getUser(email, password);
+                if (user == null) {
+                    JOptionPane.showMessageDialog(null, "User not found");
+                } else {
+                    new UserMenu(user);
+                    fLogin.dispose();
+                }
+            }
             break;
 
         case "Back":
@@ -104,5 +149,12 @@ public class Login implements ActionListener {
         default:
             break;
         }
+
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 }

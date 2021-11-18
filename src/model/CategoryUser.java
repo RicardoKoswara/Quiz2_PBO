@@ -14,19 +14,19 @@ public class CategoryUser {
     }
 
 
-    public int getId() {
+    public int getIdCategory() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setIdCategory(int id) {
         this.id = id;
     }
 
-    public String getName() {
+    public String getCategoryName() {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setCategoryName(String name) {
         this.name = name;
     }
 

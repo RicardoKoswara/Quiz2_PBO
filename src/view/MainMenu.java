@@ -8,7 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import model.User;
-
+import java.awt.Toolkit;
+import java.awt.Image;
 public class MainMenu implements ActionListener {
 
     JFrame frame;
@@ -21,6 +22,9 @@ public class MainMenu implements ActionListener {
         frame.setSize(450, 550);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Image icon = Toolkit.getDefaultToolkit().getImage("src\\images\\icon-for-social-media-19.jpg");
+        frame.setIconImage(icon);
 
         // Panel
         panel = new JPanel();
